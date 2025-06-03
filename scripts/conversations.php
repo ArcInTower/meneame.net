@@ -6,8 +6,8 @@ header("Content-Type: text/plain");
 
 $db->connect();
 $sql = "select comment_id from comments where comment_date > date_sub(now(), interval 10 day) and comment_content like '%#%'";
-$result = mysql_query($sql, $db->dbh) or die('Query failed: ' . mysql_error());
-while ($res = mysql_fetch_object($result)) {
+$result = $db->dbh->query($sql);
+while ($res = $result->fetch_object()) {
 	$comment = new Comment;
 	$comment->id = $res->comment_id;
 	$comment->read();

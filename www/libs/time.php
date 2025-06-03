@@ -8,19 +8,30 @@
 
 class Time
 {
-    protected function strftime($format, $date)
+    protected static function formatDate($format, $date)
     {
-        return strftime($format, is_numeric($date) ? $date : strtotime($date));
+        $dt = is_numeric($date) ? (new DateTime("@".$date)) : new DateTime($date);
+        // Ajuste para formatos similares a strftime
+        $replacements = [
+            '%Y' => 'Y', // Año completo
+            '%g' => 'y', // Año corto
+            '%m' => 'n', // Mes sin cero inicial
+            '%u' => 'N', // Día de la semana (1-7)
+            '%e' => 'j', // Día del mes sin cero inicial
+            '%R' => 'H:i', // Hora y minutos
+        ];
+        $phpFormat = strtr($format, $replacements);
+        return $dt->format($phpFormat);
     }
 
     public static function year($date)
     {
-        return (int) static::strftime('%Y', $date);
+        return (int) static::formatDate('%Y', $date);
     }
 
     public static function yearShort($date)
     {
-        return (int) static::strftime('%g', $date);
+        return (int) static::formatDate('%g', $date);
     }
 
     public static function month($date)
@@ -38,7 +49,7 @@ class Time
             10 => _('octubre'),
             11 => _('noviembre'),
             12 => _('diciembre'),
-        ][(int) static::strftime('%m', $date)];
+        ][(int) static::formatDate('%m', $date)];
     }
 
     public static function monthSort($date)
@@ -56,7 +67,7 @@ class Time
             5 => _('viernes'),
             6 => _('sábado'),
             7 => _('domingo'),
-        ][(int) static::strftime('%u', $date)];
+        ][(int) static::formatDate('%u', $date)];
     }
 
     public static function dayShort($date)
@@ -66,12 +77,12 @@ class Time
 
     public static function hour($date)
     {
-        return static::strftime('%R', $date);
+        return static::formatDate('%R', $date);
     }
 
     public static function dayMonthSortHour($date)
     {
-        return static::strftime('%e', $date).'/'.static::monthSort($date).' - '.static::hour($date).'h';
+        return static::formatDate('%e', $date).'/'.static::monthSort($date).' - '.static::hour($date).'h';
     }
 
     public static function diff($from, $now = 0)

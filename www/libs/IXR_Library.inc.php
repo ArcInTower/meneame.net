@@ -13,7 +13,7 @@ class IXR_Value
 {
     public $data;
     public $type;
-    public function IXR_Value($data, $type = false)
+    public function __construct($data, $type = false)
     {
         $this->data = $data;
         if (!$type) {
@@ -138,7 +138,7 @@ class IXR_Message
     public $_currentTagContents;
     // The XML parser
     public $_parser;
-    public function IXR_Message($message)
+    public function __construct($message)
     {
         $this->message = $message;
     }
@@ -287,7 +287,7 @@ class IXR_Server
     public $callbacks = array();
     public $message;
     public $capabilities;
-    public function IXR_Server($callbacks = false, $data = false)
+    public function __construct($callbacks = false, $data = false)
     {
         $this->setCapabilities();
         if ($callbacks) {
@@ -454,7 +454,7 @@ class IXR_Request
     public $method;
     public $args;
     public $xml;
-    public function IXR_Request($method, $args)
+    public function __construct($method, $args)
     {
         $this->method = $method;
         $this->args = $args;
@@ -495,7 +495,7 @@ class IXR_Client
     public $debug = false;
     // Storage place for an error message
     public $error = false;
-    public function IXR_Client($server, $path = false, $port = 80)
+    public function __construct($server, $path = false, $port = 80)
     {
         if (!$path) {
             // Assume we have been given a URL instead
@@ -601,7 +601,7 @@ class IXR_Error
 {
     public $code;
     public $message;
-    public function IXR_Error($code, $message)
+    public function __construct($code, $message)
     {
         $this->code = $code;
         $this->message = $message;
@@ -640,7 +640,7 @@ class IXR_Date
     public $hour;
     public $minute;
     public $second;
-    public function IXR_Date($time)
+    public function __construct($time)
     {
         // $time can be a PHP timestamp or an ISO one
         if (is_numeric($time)) {
@@ -685,7 +685,7 @@ class IXR_Date
 class IXR_Base64
 {
     public $data;
-    public function IXR_Base64($data)
+    public function __construct($data)
     {
         $this->data = $data;
     }
@@ -700,7 +700,7 @@ class IXR_IntrospectionServer extends IXR_Server
 {
     public $signatures;
     public $help;
-    public function IXR_IntrospectionServer()
+    public function __construct()
     {
         $this->setCallbacks();
         $this->setCapabilities();
@@ -850,7 +850,7 @@ class IXR_IntrospectionServer extends IXR_Server
 class IXR_ClientMulticall extends IXR_Client
 {
     public $calls = array();
-    public function IXR_ClientMulticall($server, $path = false, $port = 80)
+    public function __construct($server, $path = false, $port = 80)
     {
         parent::IXR_Client($server, $path, $port);
         $this->useragent = 'The Incutio XML-RPC PHP Library (multicall client)';
